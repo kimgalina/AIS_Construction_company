@@ -13,7 +13,23 @@ struct Employee
     string password;
 };
 
-void autorization(Employee arr[],int num_of_employee)
+
+
+void print_menu(string path)
+{
+    string str;
+    ifstream in3(path);
+    while (in3.peek() != EOF)
+    {
+        getline(in3, str);
+        cout << str << endl;
+    }
+    in3.close();
+    
+}
+
+
+bool autorization(Employee arr[],int num_of_employee)
 {
     starting:cout << "Enter your login >>> " << endl;
     cin >> user_login;
@@ -21,10 +37,7 @@ void autorization(Employee arr[],int num_of_employee)
     cin >> user_password;
     if (user_login == arr[num_of_employee].login && user_password == arr[num_of_employee].password)
     {
-
-        cout << "DONE !!!";
-
-
+        return true;
     }
     else
     {
@@ -65,7 +78,7 @@ int main()
     }
     in2.close();
 init_point: cin >> choice;
-    if (choice > 5 || choice < 1)
+    if (choice > 4 || choice < 0)
     {
         cout << "Sorry, but we didn't find this type of account, please try again." << endl;
         goto init_point;
@@ -75,15 +88,27 @@ init_point: cin >> choice;
         system("cls"); // чтобы открывалось новое окно 
         switch (choice)
         {
-        case 1: autorization(arr, 0); break;
-        case 2: autorization(arr, 1); break;
-        case 3: autorization(arr, 2); break;
-        case 4: autorization(arr, 3); break;
-        case 5: autorization(arr, 4); break;
-        }
-        //cout << "Enter your login >>> " ;
+        case 0: 
+            if (autorization(arr, 0))
+            {
+                system("cls");
+                print_menu("Marketing_menu.txt");
 
-        //cout << "Enter your password >>> ";
+
+                cin >> choice;
+
+
+
+
+
+                
+            }; break;
+        case 1: autorization(arr, 1); break;
+        case 2: autorization(arr, 2); break;
+        case 3: autorization(arr, 3); break;
+        case 4: autorization(arr, 4); break;
+        }
+        
 
     }
 

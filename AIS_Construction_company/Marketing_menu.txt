@@ -1,0 +1,17 @@
+___________________________Hello dear marketer!_____________________________
+
+
+1. Show a list of all customer coverage areas by region PRESS 1
+
+2. Show a list of categories for marketing PRESS 2
+
+3. Show the allocated budget for a certain category of places for marketing PRESS 3 
+
+4. Show total budget for marketing PRESS 4
+
+5. Spend a budget on promotion... PRESS 5
+
+6. EXIT PRESS 6
+
+
+Please dial the menu number to work with the program >>>

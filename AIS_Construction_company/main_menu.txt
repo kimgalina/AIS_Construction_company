@@ -1,14 +1,16 @@
-__________________________________M E N U __________________________________________
+__________________________________W e l c o m e __________________________________________
 
+                                    MAIN MENU
+__________________________________________________________________________________________
 
-Marketing PRESS 1
+Marketing PRESS 0
 
-Manager PRESS 2
+Manager PRESS 1
 
-Worker PRESS 3
+Worker PRESS 2
 
-Director PRESS 4
+Director PRESS 3
 
-Sale-manager PRESS 5
+Sale-manager PRESS 4
 
 To start, enter the program account type: >>>
