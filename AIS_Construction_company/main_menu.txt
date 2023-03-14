@@ -1,0 +1,14 @@
+__________________________________M E N U __________________________________________
+
+
+Marketing PRESS 1
+
+Manager PRESS 2
+
+Worker PRESS 3
+
+Director PRESS 4
+
+Sale-manager PRESS 5
+
+To start, enter the program account type: >>>
