@@ -1,0 +1,5 @@
+1 Instagram 1800000 users
+2 Facebook 97400 users
+3 VKontakte 1020000 users
+4 Lalafo 1300000 users
+5 Odnoklassniki 2450000 users

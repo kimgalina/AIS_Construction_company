@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
+#include<cstring>
 using namespace std;
 
 string user_login, user_password;
@@ -13,7 +14,99 @@ struct Employee
     string password;
 };
 
+int calculating_budget(string path)
+{
+    int budget = 0;
+    char money_c[10];
+    string str,substr = "0123456789",money;
+    string::size_type k, pos = 1; // так как в файле идет нумерация мы будем пропускать нумерацию и искать сумму бюджета
+    ifstream inn(path);
+    while (inn.peek() != EOF)
+    {
+        getline(inn, str);
+        
+        k = str.find_first_of(substr, pos);
+        if (k != string::npos)
+        {
+            money = str.substr(k, str.length() - k);
+            //cout << money << " ";
+            strcpy_s(money_c, money.c_str()); // переводим string в строку си 
+            budget += atoi(money_c);
+        }
 
+    }
+    
+    inn.close();
+    return budget;
+}
+
+
+void print_menu(string path);
+
+void choose_option_marketer()
+{
+    int choice;
+    cin >> choice;
+    
+    char exit;
+    switch (choice)
+    {
+    case 1:
+        system("cls");
+        print_menu("Marketing_customer_areas1.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Marketing_menu.txt");
+            choose_option_marketer();
+        }
+        break;
+    case 2:
+        system("cls");
+        print_menu("Marketing_categories2.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Marketing_menu.txt");
+            choose_option_marketer();
+        }
+        break;
+
+    case 3:
+        system("cls");
+        print_menu("Marketing_budget3.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Marketing_menu.txt");
+            choose_option_marketer();
+        }
+
+        break;
+    case 4:
+        system("cls");
+        cout << "The entire budget for marketing is  " << calculating_budget("Marketing_budget3.txt") << "$";
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Marketing_menu.txt");
+            choose_option_marketer();
+        }
+        break;
+    case 5:
+        break;
+    case 6:
+        break;
+    }
+}
 
 void print_menu(string path)
 {
@@ -69,14 +162,9 @@ int main()
     {
         cout << arr[i].num << " " << arr[i].account_type << " " << arr[i].login << " " << arr[i].password << endl;
     }*/
-    ifstream in2("main_menu.txt");
-    while (in2.peek() != EOF)
-    {
-        getline(in2, str);
-        cout << str << endl;
-
-    }
-    in2.close();
+    print_menu("main_menu.txt");
+    
+    
 init_point: cin >> choice;
     if (choice > 4 || choice < 0)
     {
@@ -92,10 +180,11 @@ init_point: cin >> choice;
             if (autorization(arr, 0))
             {
                 system("cls");
-                print_menu("Marketing_menu.txt");
+                print_menu("Marketing_menu.txt");// вывод меню маркетолога 
+                
+                choose_option_marketer();
 
-
-                cin >> choice;
+                
 
 
 
