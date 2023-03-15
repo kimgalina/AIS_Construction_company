@@ -13,4 +13,6 @@ Director PRESS 3
 
 Sale-manager PRESS 4
 
+EXIT PRESS 5
+
 To start, enter the program account type: >>>

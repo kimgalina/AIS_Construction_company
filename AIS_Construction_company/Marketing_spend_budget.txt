@@ -1,0 +1,13 @@
+Choose the field for promotion :
+___________________________________________
+
+1 Instagram 
+2 Facebook 
+3 VKontakte 
+4 Lalafo 
+5 Odnoklassniki 
+6 Advertising in media
+7 Banners
+8 Sites 
+
+>>>

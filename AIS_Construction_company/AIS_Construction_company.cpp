@@ -14,6 +14,63 @@ struct Employee
     string password;
 };
 
+void print_menu(string path);
+void choose_option_marketer(Employee* arr);
+
+bool Is_autorization(Employee arr[], int num_of_employee)
+{
+starting:cout << "Enter your login >>> " << endl;
+    cin >> user_login;
+    cout << "Enter your password >>> " << endl;
+    cin >> user_password;
+    if (user_login == arr[num_of_employee].login && user_password == arr[num_of_employee].password)
+    {
+        return true;
+    }
+    else
+    {
+        cout << "Login or password is wrong , please try again " << endl;
+        goto starting;
+    }
+
+}
+
+void choose_option_main_menu(Employee * arr)
+{
+    int choice;
+init_point: cin >> choice;
+    if (choice > 5 || choice < 0)
+    {
+        cout << "Sorry, but we didn't find this type of account, please try again." << endl;
+        goto init_point;
+    }
+    else
+    {
+        system("cls"); // чтобы открывалось новое окно 
+        switch (choice)
+        {
+        case 0:
+            if (Is_autorization(arr, 0))
+            {
+                system("cls");
+                print_menu("Marketing_menu.txt");// вывод меню маркетолога 
+
+                choose_option_marketer(arr);
+
+            }; break;
+        case 1: Is_autorization(arr, 1); break;
+        case 2: Is_autorization(arr, 2); break;
+        case 3: Is_autorization(arr, 3); break;
+        case 4: Is_autorization(arr, 4); break;
+        case 5:
+            system("cls");
+            cout << "The program is over, we look forward to your return! " << endl; break;
+        }
+
+
+    }
+}
+
 int calculating_budget(string path)
 {
     int budget = 0;
@@ -41,13 +98,14 @@ int calculating_budget(string path)
 }
 
 
-void print_menu(string path);
 
-void choose_option_marketer()
+void choose_option_marketer(Employee *arr)
 {
+    int budget = calculating_budget("Marketing_budget3.txt");
+    initial_point:
     int choice;
     cin >> choice;
-    
+   
     char exit;
     switch (choice)
     {
@@ -60,7 +118,7 @@ void choose_option_marketer()
         {
             system("cls");
             print_menu("Marketing_menu.txt");
-            choose_option_marketer();
+            goto initial_point;
         }
         break;
     case 2:
@@ -72,7 +130,7 @@ void choose_option_marketer()
         {
             system("cls");
             print_menu("Marketing_menu.txt");
-            choose_option_marketer();
+            goto initial_point;
         }
         break;
 
@@ -85,25 +143,57 @@ void choose_option_marketer()
         {
             system("cls");
             print_menu("Marketing_menu.txt");
-            choose_option_marketer();
+            goto initial_point;
         }
 
         break;
     case 4:
         system("cls");
-        cout << "The entire budget for marketing is  " << calculating_budget("Marketing_budget3.txt") << "$";
+        
+        cout << "The entire budget for marketing is  " << budget << "$";
         cout << endl << "To return to menu , enter q >>> ";
         cin >> exit;
         if (exit == 'q')
         {
             system("cls");
             print_menu("Marketing_menu.txt");
-            choose_option_marketer();
+            goto initial_point;
         }
         break;
     case 5:
+        system("cls");
+        print_menu("Marketing_spend_budget.txt");
+        int field_of_promotion,promotion;
+        cin >> field_of_promotion;
+        cout << endl << "Type in the amount of expense you want to spend from the budget >>> ";
+        enter_sum :cin >> promotion;
+        if (promotion > budget)
+        {
+            cout << "Not enough budget , try again or check the budget " << endl;
+            goto enter_sum;
+        }
+        else
+        {
+            budget -= promotion;
+            cout << "Promotion is successful " << endl;
+            cout << "Total budget is " << budget << endl;
+
+        }
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Marketing_menu.txt");
+            goto initial_point;
+        }
+
         break;
     case 6:
+        system("cls");
+        print_menu("main_menu.txt");
+        choose_option_main_menu(arr);
+
         break;
     }
 }
@@ -122,23 +212,7 @@ void print_menu(string path)
 }
 
 
-bool autorization(Employee arr[],int num_of_employee)
-{
-    starting:cout << "Enter your login >>> " << endl;
-    cin >> user_login;
-    cout << "Enter your password >>> " << endl;
-    cin >> user_password;
-    if (user_login == arr[num_of_employee].login && user_password == arr[num_of_employee].password)
-    {
-        return true;
-    }
-    else
-    {
-        cout << "Login or password is wrong , please try again " << endl;
-        goto starting;
-    }
 
-}
 
 
 int main()
@@ -147,8 +221,8 @@ int main()
     ifstream in1("Employee_info.txt");
 
     string str;
-    int choice, next, i = 0;
-    Employee arr[5]; // массив сотрудников (их пять)
+    int next, i = 0;
+    Employee *arr = new Employee[5]; // массив сотрудников (их пять)
     while (in1.peek() != EOF) /// заносим данные по каждому сотруднику в массив 
     {
         in1 >> arr[i].num;
@@ -163,43 +237,9 @@ int main()
         cout << arr[i].num << " " << arr[i].account_type << " " << arr[i].login << " " << arr[i].password << endl;
     }*/
     print_menu("main_menu.txt");
+    choose_option_main_menu(arr);
     
-    
-init_point: cin >> choice;
-    if (choice > 4 || choice < 0)
-    {
-        cout << "Sorry, but we didn't find this type of account, please try again." << endl;
-        goto init_point;
-    }
-    else
-    {
-        system("cls"); // чтобы открывалось новое окно 
-        switch (choice)
-        {
-        case 0: 
-            if (autorization(arr, 0))
-            {
-                system("cls");
-                print_menu("Marketing_menu.txt");// вывод меню маркетолога 
-                
-                choose_option_marketer();
 
-                
-
-
-
-
-
-                
-            }; break;
-        case 1: autorization(arr, 1); break;
-        case 2: autorization(arr, 2); break;
-        case 3: autorization(arr, 3); break;
-        case 4: autorization(arr, 4); break;
-        }
-        
-
-    }
-
+    delete[] arr;
     return 0;
 }
