@@ -1,0 +1,5 @@
+1 Whesley Henry : calculate all costs for the purchase of materials for construction by regions.
+2 Kiara Kan : calculate losses for the last three months in a company.
+3 Uukelsin Orozova :make a recalculation of all materials for future purchases.
+4 Sasha Kim :discuss the purchase of equipment with firms.
+5 Baktiar Tasbolotov :calculate the deadlines for the completion of all buildings at current facilities under construction.

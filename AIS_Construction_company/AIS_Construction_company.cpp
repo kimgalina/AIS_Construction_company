@@ -84,6 +84,7 @@ void choose_option_manager(Employee * arr,Corp_worker *arr1)
     case 1:
         system("cls");
         print_menu("Manager_employee_list.txt");
+        cout << endl << "To add a duty enter command 'a' or ";
         cout << endl << "To return to menu , enter q >>> ";
         cin >> exit;
         if (exit == 'q')
@@ -127,10 +128,29 @@ void choose_option_manager(Employee * arr,Corp_worker *arr1)
         }
         break;
     case 3:
-        
-
-        ; break;
-    case 4:; break;
+        system("cls");
+        print_menu("Manager_employee_duties.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Manager_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 4:
+        system("cls");
+        print_menu("Marketing_customer_areas1.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Marketing_menu.txt");
+            goto initial_point;
+        }
+        break;
     case 5:
         system("cls");
         print_menu("main_menu.txt");
