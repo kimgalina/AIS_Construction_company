@@ -1,0 +1,14 @@
+_____________________________Hello , dear manager !____________________________
+
+1 Show the list of employees PRESS 1
+
+2 Show TO DO List PRESS 2
+
+3 Show the list of duties for each employee Press 3
+
+4 Show a list of all customer coverage areas by region PRESS 4
+
+5 EXIT PRESS 5
+
+
+Please dial the menu number to work with the program >>>
