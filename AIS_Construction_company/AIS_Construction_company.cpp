@@ -4,6 +4,7 @@
 #include<cstring>
 using namespace std;
 
+const int n = 5; // переменная для количества сотрудников (именно типа worker)
 string user_login, user_password;
 
 struct Employee
@@ -12,6 +13,7 @@ struct Employee
     string account_type;
     string login;
     string password;
+    int salary;
 };
 
 struct Corp_worker
@@ -20,6 +22,7 @@ struct Corp_worker
     string surname;
     string login;
     string password;
+    int salary = 200; 
 
 };
 
@@ -29,6 +32,122 @@ void choose_option_manager(Employee* arr); /// function for manager
 void choose_option_main_menu(Employee* arr, Corp_worker* workers);
 
 
+void what_is_duty(string name) // понять какое задание по имени сотрудника 
+{
+    
+    string name2;
+    int i = 0;
+    string duties[n]; // каждая строка это задание на одного человека
+    ifstream stream("Manager_employee_duties.txt");
+    // заполнение строк из файла
+    while (stream.peek() != EOF)
+    {
+        getline(stream, duties[i]);
+        i++;
+    }
+    string::size_type k;
+    for (int j = 0; j < n; j++)
+    {
+        k = duties[j].find(' ', 0);// находим символ пробела с нулевой позиции строки чтобы потом вычислить имя сотрудника 
+        name2 = duties[j].substr(0, k); // выделили имя в строке 
+        if (name2 == name)
+        {
+            cout << endl << duties[j];
+            break;
+        }
+    }
+
+    stream.close();
+}
+
+
+string who_am_I(Corp_worker * arr1) // узнать имя сотрудника
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (arr1[i].login == user_login)
+            return arr1[i].name;
+    }
+   
+}
+int my_salary(Corp_worker* arr1,string name)
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (arr1[i].name == name)
+            return arr1[i].salary;
+            
+    }
+}
+
+void choose_option_worker(Employee * arr,Corp_worker * arr1)
+{
+    string name_of_worker = who_am_I(arr1);
+    
+    int choice;
+    char exit;
+initial_point:cin >> choice;
+    switch (choice)
+    {
+    case 1: // какое задание 
+        system("cls");
+        what_is_duty(name_of_worker);
+        
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Worker_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 2: // завершенные задания
+        system("cls");
+        print_menu("Worker_completed_tasks.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Worker_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 3: // задания над которыми сейчас работаю 
+        system("cls");
+        what_is_duty(name_of_worker);// сначала порученное задание показывает 
+        cout << endl;
+        print_menu("Worker_current_tasks.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Worker_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 4: // показать зарплату
+        system("cls");
+        cout << my_salary(arr1, name_of_worker);
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Worker_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 5:
+        system("cls");
+        print_menu("main_menu.txt");
+        choose_option_main_menu(arr, arr1);
+        break;
+    }
+
+}
 
 int counting_strings(string path)
 {
@@ -84,7 +203,7 @@ void choose_option_manager(Employee * arr,Corp_worker *arr1)
     case 1:
         system("cls");
         print_menu("Manager_employee_list.txt");
-        cout << endl << "To add a duty enter command 'a' or ";
+        
         cout << endl << "To return to menu , enter q >>> ";
         cin >> exit;
         if (exit == 'q')
@@ -315,7 +434,7 @@ starting:cout << "Enter your login >>> " << endl;
     cin >> user_login;
     cout << "Enter your password >>> " << endl;
     cin >> user_password;
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < n; i++)
     {
         if (arr[i].login == user_login && arr[i].password == user_password)
             check = 1;
@@ -376,11 +495,18 @@ init_point: cin >> choice;
                 print_menu("Manager_menu.txt");// вывод меню менеджера 
                 choose_option_manager(arr,workers);
             }
-
-
-
             break;
-        case 2: Is_autorizationForWorker(workers) ; break;
+        case 2: 
+            if (Is_autorizationForWorker(workers))
+            {
+
+                system("cls");
+                print_menu("Worker_menu.txt");// вывод меню для сотрудника
+                choose_option_worker(arr, workers);
+
+            }
+           
+            break;
         case 3: Is_autorization(arr, 2); break;
         case 4: Is_autorization(arr, 3); break;
         case 5:
@@ -400,7 +526,7 @@ int main()
 
     string str;
     int next, i = 0;
-    Corp_worker *workers = new Corp_worker[5];// массив сотрудников 
+    Corp_worker *workers = new Corp_worker[n];// массив сотрудников 
     Employee *arr = new Employee[4]; // массив 
     while (in1.peek() != EOF) /// заносим данные по каждому сотруднику в массив 
     {

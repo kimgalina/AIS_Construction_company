@@ -1,0 +1,10 @@
+_____________________________Hello , dear corp - worker !____________________________
+
+
+1 Show a list of tasks assigned to me PRESS 1
+2 Show a list of completed directions PRESS 2
+3 Show the to-do list I'm working on PRESS 3
+4 Show current salary PRESS 4
+5 EXIT PRESS 5
+
+Please dial the menu number to work with the program >>>
