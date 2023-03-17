@@ -1,4 +1,4 @@
-1 marketing Anna 123ann
-2 manager Saykal say456
-3 director Galina vyhuh05
-4 sale-manager Aleksey 2323you
+Galina Kim director Galina vyhuh05
+Anna Karenina marketing Anna 123ann 
+Saykal Orozbekova manager Saykal say456
+Aleksey Horenko sale-manager Aleksey 2323you

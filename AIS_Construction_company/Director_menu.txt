@@ -1,0 +1,18 @@
+_____________________________Hello , dear Director !____________________________
+
+1 Show a list of all customer coverage areas by region PRESS 1
+
+2 Show list of budget categories PRESS 2
+
+3 Show the allocated budget for a certain category of places for marketing PRESS 3
+
+4 Increase employee salary PRESS 4
+
+5 Decrease employee salary PRESS 5
+
+6 Show the list of equipment for building facilities PRESS 6
+
+7 EXIT PRESS 7
+
+
+Please dial the menu number to work with the program >>>

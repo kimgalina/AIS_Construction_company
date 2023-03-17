@@ -4,12 +4,20 @@
 #include<cstring>
 using namespace std;
 
+int calculating_budget(string path);
+
 const int n = 5; // переменная для количества сотрудников (именно типа worker)
+int m = 4; // количество employee не workers
 string user_login, user_password;
+int choice; // выбор меню
+int salary_budget = calculating_budget("Salary_budget.txt");
+int marketing_budget = calculating_budget("Marketing_budget3.txt");
+
 
 struct Employee
 {
-    int num; // номер сотрудника в меню
+    string name;
+    string surname;
     string account_type;
     string login;
     string password;
@@ -20,6 +28,7 @@ struct Corp_worker
 {
     string name;
     string surname;
+    string account_type = "worker";
     string login;
     string password;
     int salary = 200; 
@@ -27,14 +36,180 @@ struct Corp_worker
 };
 
 void print_menu(string path); 
-void choose_option_marketer(Employee* arr);/// function fot marketer
-void choose_option_manager(Employee* arr); /// function for manager
+void choose_option_marketer(Employee* arr, Corp_worker* arr1);/// function for marketer
+void choose_option_manager(Employee* arr, Corp_worker* arr1); /// function for manager
 void choose_option_main_menu(Employee* arr, Corp_worker* workers);
 
+void change_salary(string name ,string what_to_do,Employee * arr,Corp_worker * arr1,int dif_salary)
+{    // проверяем первый массив employee типа
+    int check = 0; // проверяем нашелся ли сотрудник 
+    for (int i = 0; i < m; i++)
+    {
+        if (arr[i].name == name)
+        {
+            check = 1;
+            if (what_to_do == "increase")
+            {
+                arr[i].salary += dif_salary;
+                cout << endl << "“Supercharge successfully made! \n Current salary for employees after the allowance: " << arr[i].salary << endl;
+            }
+            else if (what_to_do == "decrease")
+            {
+                if (arr[i].salary > dif_salary) // проеверяем уместность урезания зарплаты 
+                {
+                    arr[i].salary -= dif_salary;
+                    cout << endl << " Pay cut successfully done! The current salary for this employee after the pay cut :" << arr[i].salary << endl;
+                }
+                else
+                    cout << "ERROR , the amount of pay cut money is greater then the employee's salary" << endl;
+            }
+        }
+    }
+    // проверяем второй массив workers типа 
+    for (int i = 0; i < n; i++)
+    {
+        if (arr1[i].name == name)
+        {
+            check = 1;
+            if (what_to_do == "increase")
+            {
+                arr1[i].salary += dif_salary;
+                cout << endl << "“Supercharge successfully made! \n Current salary for employees after the allowance: " << arr1[i].salary << endl;
+            }
+            else if (what_to_do == "decrease")
+            {
+                if (arr1[i].salary > dif_salary) // проеверяем уместность урезания зарплаты 
+                {
+                    arr1[i].salary -= dif_salary;
+                    cout << endl << " Pay cut successfully done! The current salary for this employee after the pay cut :" << arr1[i].salary << endl;
+                }
+                else
+                    cout << "ERROR , the amount of pay cut money is greater then the employee's salary" << endl;
+            }
+        }
+    }
+    // запишем в файл с зарплатой сотрудников новые данные
+    ofstream out("Salary_budget.txt");
+    for (int i = 0; i < m; i++)
+    {
+        out << arr[i].name << " " << arr[i].surname << " " << arr[i].account_type << " " << arr[i].salary << endl;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        out << arr1[i].name << " " << arr1[i].surname << " " << arr1[i].account_type << " " << arr1[i].salary << endl;
+    }
+
+    out.close();
+    salary_budget = calculating_budget("Salary_budget.txt");
+    if (!check)
+        cout << "ERROR , the employee with that name has not been found !" << endl;
+}
+
+
+void choose_option_director(Employee* arr, Corp_worker* arr1) // function for director 
+{
+    char exit; // для выхода из подменю
+    string name;
+    int dif_salary;// разница в зарплате повысить/понизить
+initial_point:
+    cin >> choice;
+    switch (choice)
+    {
+    case 1:
+        system("cls");
+        print_menu("Marketing_customer_areas1.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Director_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 2:
+        system("cls");
+        cout << "Budget for marketing >>>      " << marketing_budget << endl;
+        cout << "Budget for salary    >>>      " << salary_budget << endl;
+        print_menu("Salary_budget.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Director_menu.txt");
+            goto initial_point;
+        }
+        break;
+
+    case 3:
+        system("cls");
+        print_menu("Marketing_budget3.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Director_menu.txt");
+            goto initial_point;
+        }
+
+        break;
+    case 4:// increase salary
+        system("cls");
+
+        cout << "Type the name of employee , for who's salary you want to increase  >>> ";
+        cin >> name;
+        cout << "how much would you like to raise the  salary ? >>> ";
+        cin >> dif_salary;
+        change_salary(name, "increase", arr, arr1, dif_salary);
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Director_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 5:// decrease salary
+        system("cls");
+        cout << "Type the name of employee , for who's salary you want to decrease  >>> ";
+        cin >> name;
+        cout << "how much would you like to decrease the  salary ? >>> ";
+        cin >> dif_salary;
+        change_salary(name, "decrease", arr, arr1, dif_salary);
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Director_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 6:
+        system("cls");
+        print_menu("Director_List_equipment.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Director_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 7:
+        system("cls");
+        print_menu("main_menu.txt");
+        choose_option_main_menu(arr, arr1);
+        break;
+    }
+}
 
 void what_is_duty(string name) // понять какое задание по имени сотрудника 
 {
-    
     string name2;
     int i = 0;
     string duties[n]; // каждая строка это задание на одного человека
@@ -56,7 +231,6 @@ void what_is_duty(string name) // понять какое задание по и
             break;
         }
     }
-
     stream.close();
 }
 
@@ -68,24 +242,20 @@ string who_am_I(Corp_worker * arr1) // узнать имя сотрудника
         if (arr1[i].login == user_login)
             return arr1[i].name;
     }
-   
 }
 int my_salary(Corp_worker* arr1,string name)
 {
     for (int i = 0; i < n; i++)
     {
         if (arr1[i].name == name)
-            return arr1[i].salary;
-            
+            return arr1[i].salary;  
     }
 }
 
-void choose_option_worker(Employee * arr,Corp_worker * arr1)
+void choose_option_worker(Employee * arr,Corp_worker * arr1) /// function for corp-workers
 {
     string name_of_worker = who_am_I(arr1);
-    
-    int choice;
-    char exit;
+    char exit; // для выхода из подменю
 initial_point:cin >> choice;
     switch (choice)
     {
@@ -279,10 +449,6 @@ void choose_option_manager(Employee * arr,Corp_worker *arr1)
 
 }
 
-
-
-
-
 int calculating_budget(string path)
 {
     int budget = 0;
@@ -295,7 +461,7 @@ int calculating_budget(string path)
         getline(inn, str);
         
         k = str.find_first_of(substr, pos);
-        if (k != string::npos)
+        if (k != string::npos)// если мы нашли символы в строке из подстроки те числа 
         {
             money = str.substr(k, str.length() - k);
             //cout << money << " ";
@@ -309,11 +475,9 @@ int calculating_budget(string path)
     return budget;
 }
 
-
-
 void choose_option_marketer(Employee *arr,Corp_worker * arr1)
 {
-    int budget = calculating_budget("Marketing_budget3.txt");
+    //int budget = marketing_budget;
     initial_point:
     int choice;
     cin >> choice;
@@ -362,7 +526,7 @@ void choose_option_marketer(Employee *arr,Corp_worker * arr1)
     case 4:
         system("cls");
         
-        cout << "The entire budget for marketing is  " << budget << "$";
+        cout << "The entire budget for marketing is  " << marketing_budget << "$";
         cout << endl << "To return to menu , enter q >>> ";
         cin >> exit;
         if (exit == 'q')
@@ -384,16 +548,16 @@ void choose_option_marketer(Employee *arr,Corp_worker * arr1)
         }
         cout << endl << "Type in the amount of expense you want to spend from the budget >>> ";
         enter_sum :cin >> promotion;
-        if (promotion > budget)
+        if (promotion > marketing_budget)
         {
-            cout << "Not enough budget , your total budget is  " <<  budget << endl;
+            cout << "Not enough budget , your total budget is  " <<  marketing_budget << endl;
             goto enter_sum;
         }
         else
         {
-            budget -= promotion;
+            marketing_budget -= promotion;
             cout << "Promotion is successful " << endl;
-            cout << "Total budget is " << budget << endl;
+            cout << "Total budget is " << marketing_budget << endl;
 
         }
         cout << endl << "To return to menu , enter q >>> ";
@@ -484,30 +648,36 @@ init_point: cin >> choice;
             if (Is_autorization(arr, 0))
             {
                 system("cls");
-                print_menu("Marketing_menu.txt");// вывод меню маркетолога 
-                choose_option_marketer(arr,workers);
-            };
+                print_menu("Director_menu.txt");// вывод меню для директора
+                choose_option_director(arr, workers);
+            }
             break;
+            
         case 1:
             if (Is_autorization(arr, 1))
             {
                 system("cls");
-                print_menu("Manager_menu.txt");// вывод меню менеджера 
-                choose_option_manager(arr,workers);
-            }
+                print_menu("Marketing_menu.txt");// вывод меню маркетолога 
+                choose_option_marketer(arr, workers);
+            };
             break;
         case 2: 
+            if (Is_autorization(arr, 2))
+            {
+                system("cls");
+                print_menu("Manager_menu.txt");// вывод меню менеджера 
+                choose_option_manager(arr, workers);
+            }
+            break;
+        case 3: 
             if (Is_autorizationForWorker(workers))
             {
 
                 system("cls");
                 print_menu("Worker_menu.txt");// вывод меню для сотрудника
                 choose_option_worker(arr, workers);
-
             }
-           
             break;
-        case 3: Is_autorization(arr, 2); break;
         case 4: Is_autorization(arr, 3); break;
         case 5:
             system("cls");
@@ -518,6 +688,28 @@ init_point: cin >> choice;
     }
 }
 
+void my_salary(string path,Employee * arr) // считывает данные с файла о зарплате сотрудника 
+{
+    ifstream in(path);
+
+    char money_c[10];
+    string str, substr = "0123456789", money;
+    string::size_type k, pos = 0; 
+   
+    for (int i = 0; i < 4; i++)// сотрудников (не workers) всего 4
+    {
+        getline(in, str);
+        k = str.find_first_of(substr, pos);
+        money = str.substr(k, (str.length() - k));
+        strcpy_s(money_c, money.c_str());
+        arr[i].salary = atoi(money_c);
+    }
+
+    
+    in.close();
+}
+
+
 
 int main()
 {
@@ -527,16 +719,18 @@ int main()
     string str;
     int next, i = 0;
     Corp_worker *workers = new Corp_worker[n];// массив сотрудников 
-    Employee *arr = new Employee[4]; // массив 
+    Employee *arr = new Employee[m]; // массив 
     while (in1.peek() != EOF) /// заносим данные по каждому сотруднику в массив 
     {
-        in1 >> arr[i].num;
+        in1 >> arr[i].name;
+        in1 >> arr[i].surname;
         in1 >> arr[i].account_type;
         in1 >> arr[i].login;
         in1 >> arr[i].password;
         ++i;
     }
     in1.close();
+    my_salary("Salary_budget.txt", arr);
     i = 0;
     in1.open("Workers_info.txt");
     while (in1.peek() != EOF) /// заносим данные по каждому сотруднику в массив 
