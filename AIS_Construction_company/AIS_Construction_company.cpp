@@ -40,6 +40,181 @@ void choose_option_marketer(Employee* arr, Corp_worker* arr1);/// function for m
 void choose_option_manager(Employee* arr, Corp_worker* arr1); /// function for manager
 void choose_option_main_menu(Employee* arr, Corp_worker* workers);
 
+void find_apartment(string path)
+{
+    // одна строка это информация об одной квартире 
+    string str,price;
+
+    char price_c[10];
+    int str_count = 0;
+    string::size_type k; // позиция символа 
+    /// узнаем сколько строк или квартир в файле 
+    ifstream in(path);
+    while (in.peek() != EOF)
+    {
+        getline(in, str); // читаем файл построчно
+        str_count++;
+    }
+    in.close();
+    cout << str_count << endl;
+    string* apartments = new string[str_count];// массив инфы о каждой квартире
+    int* prices = new int[str_count]; // массив цен 
+    int i = 0;
+    in.open(path);
+    cin.get();
+    while (in.peek() != EOF)
+    {
+        getline(in, apartments[i]);
+        i++;
+    }
+    in.close();
+    // заполнили массив цен 
+    for (int j = 0; j < str_count; j++)
+    {
+        k = apartments[j].find(' ', 0);
+        price = apartments[j].substr(0, k); // выделем цену в строку
+        strcpy_s(price_c, price.c_str());
+        prices[j] = atoi(price_c);
+    }
+    // найдем самую дорогую квартиру 
+    int most_expensive = -1;
+    int index_most_expensive;
+    for (int i = 0; i < str_count; i++)
+    {
+        if (prices[i] > most_expensive)
+        {
+            most_expensive = prices[i];
+            index_most_expensive = i;
+        }
+    }
+    // найдем самую дешевую квартиру
+    int cheapest = 100000;
+    int index_cheapest;
+    for (int i = 0; i < str_count; i++)
+    {
+        if (prices[i] < cheapest)
+        {
+            cheapest = prices[i];
+            index_cheapest = i;
+        }
+    }
+    cout << "The most expensive apartment is  >>>" << endl;
+    cout << apartments[index_most_expensive] << endl;
+    cout << "The cheapest apartment is >>> " << endl;
+    cout << apartments[index_cheapest] << endl;
+
+    delete[] apartments;
+    delete[] prices;
+}
+
+
+void find_customer(string path,string surname)
+{
+    string surname1;
+    string str;
+    ifstream in(path);
+    string::size_type k;
+    int check = 0;
+    while (in.peek() != EOF)
+    {
+        getline(in, str); // читаем файл построчно
+        k = str.find(' ', 0); // так как слова разделены пробелами ищем первый пробел и выделяем слово - фамилию покупателя 
+        surname1 = str.substr(0, k);
+        if (surname1 == surname)
+        {
+            cout << "The customer is found )" << endl;
+            cout << str << endl;
+            check = 1;
+            break;
+        }
+    }
+    if(!check)
+        cout << "Sorry , but there is no such customer with that name (((" << endl;
+
+    in.close();
+}
+
+void choose_option_sale_manager(Employee* arr, Corp_worker* arr1)// function for sale-manager
+{
+    string surname;
+    char exit; // для выхода из подменю
+initial_point:
+    cin >> choice;
+    switch (choice)
+    {
+    case 1:
+        system("cls");
+        print_menu("Sale_manager_Customer_List.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Sale_manager_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 2:// search customer
+        system("cls");
+        cout << "Enter the surname of customer to search >>>";
+        cin >> surname;
+        find_customer("Sale_manager_Customer_List.txt",surname);
+
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Sale_manager_menu.txt");
+            goto initial_point;
+        }
+        break;
+
+    case 3: // available apartments
+        system("cls");
+        print_menu("Sale_manager_available_apartments.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Sale_manager_menu.txt");
+            goto initial_point;
+        }
+
+        break;
+    case 4:
+        system("cls");
+        print_menu("Sale_manager_Sold_apartments.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Sale_manager_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 5:
+        system("cls");
+        find_apartment("Sale_manager_available_apartments.txt");
+        cout << endl << "To return to menu , enter q >>> ";
+        cin >> exit;
+        if (exit == 'q')
+        {
+            system("cls");
+            print_menu("Sale_manager_menu.txt");
+            goto initial_point;
+        }
+        break;
+    case 6:
+        system("cls");
+        print_menu("main_menu.txt");
+        choose_option_main_menu(arr, arr1);
+        break; 
+    }
+}
+
 void change_salary(string name ,string what_to_do,Employee * arr,Corp_worker * arr1,int dif_salary)
 {    // проверяем первый массив employee типа
     int check = 0; // проверяем нашелся ли сотрудник 
@@ -678,7 +853,14 @@ init_point: cin >> choice;
                 choose_option_worker(arr, workers);
             }
             break;
-        case 4: Is_autorization(arr, 3); break;
+        case 4:
+            if (Is_autorization(arr, 3))
+            {
+                system("cls");
+                print_menu("Sale_manager_menu.txt");
+                choose_option_sale_manager(arr,workers);
+            }
+            break;
         case 5:
             system("cls");
             cout << "The program is over, we look forward to your return! " << endl; break;

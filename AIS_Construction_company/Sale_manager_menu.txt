@@ -1,0 +1,17 @@
+___________________________Hello dear Sale - manager!_____________________________
+
+
+1. Show a list of all customer  PRESS 1
+
+2. Search a customer PRESS 2
+
+3. Show available apartments for purhasing PRESS 3 
+
+4. Show sold apartments  PRESS 4
+
+5. Show the most expensive and the cheapest apartments PRESS 5
+
+6. EXIT PRESS 6
+
+
+Please dial the menu number to work with the program >>>
