@@ -40,6 +40,23 @@ void choose_option_marketer(Employee* arr, Corp_worker* arr1);/// function for m
 void choose_option_manager(Employee* arr, Corp_worker* arr1); /// function for manager
 void choose_option_main_menu(Employee* arr, Corp_worker* workers);
 
+bool EXIT(string path)
+{
+    char exit;
+    cout << endl << "To return to menu , enter q >>> ";
+    cin >> exit;
+    if (exit == 'q')
+    {
+        system("cls");
+        print_menu(path);
+        return true;
+    }
+    else
+        return false;
+}
+
+
+
 void find_apartment(string path)
 {
     // одна строка это информация об одной квартире 
@@ -56,12 +73,11 @@ void find_apartment(string path)
         str_count++;
     }
     in.close();
-    cout << str_count << endl;
     string* apartments = new string[str_count];// массив инфы о каждой квартире
     int* prices = new int[str_count]; // массив цен 
     int i = 0;
     in.open(path);
-    cin.get();
+    // заполняем массив информации о каждой квартире
     while (in.peek() != EOF)
     {
         getline(in, apartments[i]);
@@ -73,8 +89,8 @@ void find_apartment(string path)
     {
         k = apartments[j].find(' ', 0);
         price = apartments[j].substr(0, k); // выделем цену в строку
-        strcpy_s(price_c, price.c_str());
-        prices[j] = atoi(price_c);
+        strcpy_s(price_c, price.c_str());// переводим цену из string  в строку си
+        prices[j] = atoi(price_c); // из строки си в int
     }
     // найдем самую дорогую квартиру 
     int most_expensive = -1;
@@ -114,7 +130,7 @@ void find_customer(string path,string surname)
     string str;
     ifstream in(path);
     string::size_type k;
-    int check = 0;
+    bool check = false; 
     while (in.peek() != EOF)
     {
         getline(in, str); // читаем файл построчно
@@ -124,7 +140,7 @@ void find_customer(string path,string surname)
         {
             cout << "The customer is found )" << endl;
             cout << str << endl;
-            check = 1;
+            check = true;
             break;
         }
     }
@@ -137,7 +153,6 @@ void find_customer(string path,string surname)
 void choose_option_sale_manager(Employee* arr, Corp_worker* arr1)// function for sale-manager
 {
     string surname;
-    char exit; // для выхода из подменю
 initial_point:
     cin >> choice;
     switch (choice)
@@ -145,67 +160,39 @@ initial_point:
     case 1:
         system("cls");
         print_menu("Sale_manager_Customer_List.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Sale_manager_menu.txt");
+        if (EXIT("Sale_manager_menu.txt"))
             goto initial_point;
-        }
         break;
     case 2:// search customer
         system("cls");
         cout << "Enter the surname of customer to search >>>";
         cin >> surname;
         find_customer("Sale_manager_Customer_List.txt",surname);
-
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Sale_manager_menu.txt");
+        if (EXIT("Sale_manager_menu.txt"))
             goto initial_point;
-        }
+       
         break;
 
     case 3: // available apartments
         system("cls");
         print_menu("Sale_manager_available_apartments.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Sale_manager_menu.txt");
+        if (EXIT("Sale_manager_menu.txt"))
             goto initial_point;
-        }
 
         break;
     case 4:
         system("cls");
         print_menu("Sale_manager_Sold_apartments.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Sale_manager_menu.txt");
+        if (EXIT("Sale_manager_menu.txt"))
             goto initial_point;
-        }
+
         break;
     case 5:
         system("cls");
         find_apartment("Sale_manager_available_apartments.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Sale_manager_menu.txt");
+        if (EXIT("Sale_manager_menu.txt"))
             goto initial_point;
-        }
+
         break;
     case 6:
         system("cls");
@@ -293,41 +280,25 @@ initial_point:
     case 1:
         system("cls");
         print_menu("Marketing_customer_areas1.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Director_menu.txt");
+        if (EXIT("Director_menu.txt"))
             goto initial_point;
-        }
+
         break;
     case 2:
         system("cls");
         cout << "Budget for marketing >>>      " << marketing_budget << endl;
         cout << "Budget for salary    >>>      " << salary_budget << endl;
         print_menu("Salary_budget.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Director_menu.txt");
+        if (EXIT("Director_menu.txt"))
             goto initial_point;
-        }
+
         break;
 
     case 3:
         system("cls");
         print_menu("Marketing_budget3.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Director_menu.txt");
+        if (EXIT("Director_menu.txt"))
             goto initial_point;
-        }
 
         break;
     case 4:// increase salary
@@ -338,14 +309,9 @@ initial_point:
         cout << "how much would you like to raise the  salary ? >>> ";
         cin >> dif_salary;
         change_salary(name, "increase", arr, arr1, dif_salary);
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Director_menu.txt");
+        if (EXIT("Director_menu.txt"))
             goto initial_point;
-        }
+
         break;
     case 5:// decrease salary
         system("cls");
@@ -354,26 +320,16 @@ initial_point:
         cout << "how much would you like to decrease the  salary ? >>> ";
         cin >> dif_salary;
         change_salary(name, "decrease", arr, arr1, dif_salary);
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Director_menu.txt");
+        if (EXIT("Director_menu.txt"))
             goto initial_point;
-        }
+
         break;
     case 6:
         system("cls");
         print_menu("Director_List_equipment.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Director_menu.txt");
+        if (EXIT("Director_menu.txt"))
             goto initial_point;
-        }
+
         break;
     case 7:
         system("cls");
@@ -437,53 +393,29 @@ initial_point:cin >> choice;
     case 1: // какое задание 
         system("cls");
         what_is_duty(name_of_worker);
-        
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Worker_menu.txt");
+        if (EXIT("Worker_menu.txt"))
             goto initial_point;
-        }
+
         break;
     case 2: // завершенные задания
         system("cls");
         print_menu("Worker_completed_tasks.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Worker_menu.txt");
+        if (EXIT("Worker_menu.txt"))
             goto initial_point;
-        }
         break;
     case 3: // задания над которыми сейчас работаю 
         system("cls");
         what_is_duty(name_of_worker);// сначала порученное задание показывает 
         cout << endl;
         print_menu("Worker_current_tasks.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Worker_menu.txt");
+        if (EXIT("Worker_menu.txt"))
             goto initial_point;
-        }
         break;
     case 4: // показать зарплату
         system("cls");
         cout << my_salary(arr1, name_of_worker);
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Worker_menu.txt");
+        if (EXIT("Worker_menu.txt"))
             goto initial_point;
-        }
         break;
     case 5:
         system("cls");
@@ -541,36 +473,22 @@ void rewriting_duties(string path1,string path2)// получим файл с у
 void choose_option_manager(Employee * arr,Corp_worker *arr1)
 {
     int choice;
-    char exit;
     initial_point:cin >> choice;
     switch (choice)
     {
     case 1:
         system("cls");
         print_menu("Manager_employee_list.txt");
-        
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Manager_menu.txt");
+        if (EXIT("Manager_menu.txt"))
             goto initial_point;
-        }
         break;
     case 2:
         system("cls");
         print_menu("Manager_TODO_List1.txt");
         cout <<endl << "To add a duty enter command 'a' or ";
-        cout << endl << "To return to menu , enter q >>> " ;
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Manager_menu.txt");
+        if (EXIT("Manager_menu.txt"))
             goto initial_point;
-        }
-        else if (exit == 'a')
+        else
         {
             string duty;
             cout << endl << "Enter the name of the duty and info about it >>>";
@@ -581,39 +499,21 @@ void choose_option_manager(Employee * arr,Corp_worker *arr1)
             out << endl  <<  " " << duty << endl;
             cout << "It was successfully written )";
             rewriting_duties("Manager_TODO_List1.txt", "Manager_TODO_List2.txt");
-            cout << endl << "To return to menu , enter q >>> ";
-            cin >> exit;
-            if (exit == 'q')
-            {
-                system("cls");
-                print_menu("Manager_menu.txt");
+            if (EXIT("Manager_menu.txt"))
                 goto initial_point;
-            }
         }
         break;
     case 3:
         system("cls");
         print_menu("Manager_employee_duties.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Manager_menu.txt");
+        if (EXIT("Manager_menu.txt"))
             goto initial_point;
-        }
         break;
     case 4:
         system("cls");
         print_menu("Marketing_customer_areas1.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Marketing_menu.txt");
+        if (EXIT("Manager_menu.txt"))
             goto initial_point;
-        }
         break;
     case 5:
         system("cls");
@@ -657,59 +557,33 @@ void choose_option_marketer(Employee *arr,Corp_worker * arr1)
     int choice;
     cin >> choice;
    
-    char exit;
     switch (choice)
     {
     case 1:
         system("cls");
         print_menu("Marketing_customer_areas1.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Marketing_menu.txt");
+        if (EXIT("Marketing_menu.txt"))
             goto initial_point;
-        }
         break;
     case 2:
         system("cls");
         print_menu("Marketing_categories2.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Marketing_menu.txt");
+        if (EXIT("Marketing_menu.txt"))
             goto initial_point;
-        }
         break;
 
     case 3:
         system("cls");
         print_menu("Marketing_budget3.txt");
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Marketing_menu.txt");
+        if (EXIT("Marketing_menu.txt"))
             goto initial_point;
-        }
-
         break;
     case 4:
         system("cls");
         
         cout << "The entire budget for marketing is  " << marketing_budget << "$";
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Marketing_menu.txt");
+        if (EXIT("Marketing_menu.txt"))
             goto initial_point;
-        }
         break;
     case 5:
         system("cls");
@@ -735,15 +609,8 @@ void choose_option_marketer(Employee *arr,Corp_worker * arr1)
             cout << "Total budget is " << marketing_budget << endl;
 
         }
-        cout << endl << "To return to menu , enter q >>> ";
-        cin >> exit;
-        if (exit == 'q')
-        {
-            system("cls");
-            print_menu("Marketing_menu.txt");
+        if (EXIT("Marketing_menu.txt"))
             goto initial_point;
-        }
-
         break;
     case 6:
         system("cls");
@@ -895,7 +762,7 @@ void my_salary(string path,Employee * arr) // считывает данные с
 
 int main()
 {
-    //setlocale(LC_ALL, "Rus");
+   
     ifstream in1("Employee_info.txt");
 
     string str;
@@ -924,10 +791,7 @@ int main()
         ++i;
     }
     in1.close();
-    /*for (int i = 0; i < 5; i++)
-    {
-        cout << arr[i].num << " " << arr[i].account_type << " " << arr[i].login << " " << arr[i].password << endl;
-    }*/
+    
     print_menu("main_menu.txt");
     choose_option_main_menu(arr,workers);
     
